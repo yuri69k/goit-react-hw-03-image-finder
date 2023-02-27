@@ -35,7 +35,7 @@ export default class SearchInfo extends Component {
     const nextQuery = this.props.query;
 
     if (prevQuery !== nextQuery) {
-      this.setState({ status: Status.PENDING, page: 1 }, () => {
+      this.setState({ status: Status.PENDING, page: 1,  isError: false, }, () => {
         const page = this.state.page;
 
         fetchPictures(nextQuery, page).then(pictures => {
