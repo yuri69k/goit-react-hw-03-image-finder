@@ -28,6 +28,7 @@ export default class SearchInfo extends Component {
     status: Status.IDLE,
     page: this.props.initialPage,
      isError: false,
+     
   };
 
   componentDidUpdate = prevProps => {
@@ -35,7 +36,7 @@ export default class SearchInfo extends Component {
     const nextQuery = this.props.query;
 
     if (prevQuery !== nextQuery) {
-      this.setState({ status: Status.PENDING, page: 1,  isError: false, }, () => {
+      this.setState({ status: Status.PENDING, page: 1,  isError: false,theEnd: false, }, () => {
         const page = this.state.page;
 
         fetchPictures(nextQuery, page).then(pictures => {
@@ -111,7 +112,9 @@ export default class SearchInfo extends Component {
   };
 
   render() {
-    const { pictures, status, showModal, largeImage, tags, isError} = this.state;
+    const { pictures, status, showModal, largeImage, tags, page, isError} = this.state;
+    
+    
     if (isError === true) {
       return (
         <>
@@ -130,13 +133,7 @@ export default class SearchInfo extends Component {
             svgSize: '150px',
           })}
           
-            <ImageGallery
-              pictures={pictures}
-              setInfoForModal={this.setInfoForModal}
-            />
-          {pictures.length !== 0 && (
-            <Button incrementPage={this.incrementPage} />
-          )}
+      
         </>
       );
     }
@@ -157,11 +154,12 @@ export default class SearchInfo extends Component {
               tags={tags}
             />
           )}
-          {pictures.length !== 0 && (
+          {pictures.length > 0 && pictures.length/page===12&&
+          (
             <Button incrementPage={this.incrementPage} />
           )}
         </>
-      );
+      )
     }
   }
 }
